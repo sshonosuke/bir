@@ -3,19 +3,21 @@
 ###----------------------------------------------###
 
 # y: vector of observations
-# x:vector of lacations
+# x: vector of locations
 
 library("MASS")
 library("truncnorm")
 library("GIGrvg")
 
-BIR = function(y,x, mc=3000, burn=500){
+
+BIR = function(y, x, mc=3000, burn=500){
+  ## preparation 
   n = length(y)
   D = lower.tri(diag(n), diag = T)
   w = diff(x)
   MC = mc + burn
   
-  ##MCMC sample box
+  ## MCMC sample box
   eta.pos = matrix(NA, MC, n)
   tau_sqr.pos = matrix(NA, MC, n)
   nu.pos = matrix(NA, MC, n)
@@ -23,7 +25,7 @@ BIR = function(y,x, mc=3000, burn=500){
   xi.pos = c()
   sigma_sqr.pos = c()
   
-  ##initial values
+  ## initial values
   eta = rep(1, n)
   tau_sqr = rep(1, n)
   nu = rep(1, n)
@@ -31,9 +33,9 @@ BIR = function(y,x, mc=3000, burn=500){
   xi = 1
   sigma_sqr = 1
   
-  ##MCMC iterations
+  ## MCMC iterations
   for(k in 1:MC){
-    #sampling from eta
+    # sampling from eta
     e = y - D %*% eta + D[, 1] * eta[1] 
     m = t(e) %*% D[, 1]/(sum(D[, 1]^2) + 1/tau_sqr[1])
     s_sqr = sigma_sqr /(sum(D[, 1]^2) + 1/tau_sqr[1])
@@ -46,7 +48,7 @@ BIR = function(y,x, mc=3000, burn=500){
     }
     eta.pos[k, ] = eta
   
-  #sampling from nu
+  # sampling from nu
   nu[1] = rgamma(n=1, shape=3/2, rate = 1+tau_sqr[1])
   for(j in 2:n){
     nu[j] = rgamma(n=1, shape = 1, rate = 1+tau_sqr[j]) 
