@@ -5,5 +5,5 @@ Okano, R., Hamura, Y., Irie, K. and Sugasawa, S. (2024+). Locally adaptive Bayes
 
 The repository includes the following files.
 
-- `BIR-function.R` : Implementation of the Bayesian isotonic regression (BIR) 
-- `Example.R: Example` of fitting BIR to simulated data
+- `BIR-function.R`: Implementation of the Bayesian isotonic regression (BIR) 
+- `Example.R`: Example of fitting BIR to simulated data
